@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universidad Java</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f4f8; font-family: sans-serif; }
+
+        .emoji-hero {
+            font-size: 72px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+        .emoji-hero:hover { transform: scale(1.2) rotate(-10deg); }
+
+        .btn-primary-custom {
+            background-color: #3a2a6e;
+            color: white;
+            border-radius: 12px;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(58,42,110,0.35);
+            color: white;
+        }
+        .btn-primary-custom:active { transform: translateY(0); }
+
+        .btn-outline-custom {
+            border: 2px solid #3a2a6e;
+            color: #3a2a6e;
+            border-radius: 12px;
+            background: transparent;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+        .btn-outline-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(58,42,110,0.2);
+            background: #f0eeff;
+            color: #3a2a6e;
+        }
+
+        .feature-card {
+            border: 1px solid #c0b0e0;
+            border-radius: 16px;
+            background: #fff;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 30px rgba(58,42,110,0.15);
+        }
+
+        .card-emoji {
+            font-size: 52px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+        .feature-card:hover .card-emoji { transform: scale(1.15) rotate(-5deg); }
+
+        .btn-card {
+            background-color: #3a2a6e;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(58,42,110,0.3);
+            color: white;
+        }
+
+        .badge-tag {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .nav-link { transition: transform 0.2s; }
+        .nav-link:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg" style="background-color: #3a2a6e;">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="/">🎓 Universidad Java</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" style="color: white;">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" href="/">🏠 Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/estudiantes">👥 Estudiantes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/cursos">📚 Cursos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-white dropdown-toggle" href="#"
+                           data-bs-toggle="dropdown">
+                            👤 <span sec:authentication="name">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <span class="dropdown-item-text text-muted" style="font-size: 12px;">
+                                    <span sec:authorize="hasRole('ADMIN')">🛡️ Administrador</span>
+                                    <span sec:authorize="hasRole('USER')">🎓 Estudiante</span>
+                                </span>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        🚪 Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="py-5" style="background-color: #f4f4f8;">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <span class="emoji-hero">🎓</span>
+                    <h1 class="display-4 fw-bold mt-3" style="color: #3a2a6e;">Universidad Java</h1>
+                    <p class="lead mb-4" style="color: #7060a0;">
+                        Sistema de gestión académica — SpringEduManager
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+                        <a href="/estudiantes" class="btn btn-lg btn-primary-custom px-4">
+                            👥 Ver Estudiantes
+                        </a>
+                        <a href="/cursos" class="btn btn-lg btn-outline-custom px-4">
+                            📚 Ver Cursos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TARJETAS -->
+    <div class="container py-5">
+        <div class="row g-4 justify-content-center">
+
+            <!-- Estudiantes -->
+            <div class="col-md-4">
+                <div class="feature-card h-100 text-center p-4 shadow-sm">
+                    <span class="card-emoji">🎓</span>
+                    <h3 class="fw-bold mt-3" style="color: #3a2a6e;">Estudiantes</h3>
+                    <p style="color: #7060a0;">Gestiona el registro de estudiantes del bootcamp</p>
+                    <span class="badge-tag mb-3 d-inline-block"
+                          style="background: #dcfce7; color: #16a34a;">
+                        ✅ ACTIVO
+                    </span>
+                    <br>
+                    <a href="/estudiantes" class="btn btn-card mt-2 px-4 py-2">
+                        Ir a Estudiantes →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cursos -->
+            <div class="col-md-4">
+                <div class="feature-card h-100 text-center p-4 shadow-sm">
+                    <span class="card-emoji">📚</span>
+                    <h3 class="fw-bold mt-3" style="color: #3a2a6e;">Cursos</h3>
+                    <p style="color: #7060a0;">Administra los cursos y programas disponibles</p>
+                    <span class="badge-tag mb-3 d-inline-block"
+                          style="background: #dbeafe; color: #2563eb;">
+                        ✅ ACTIVO
+                    </span>
+                    <br>
+                    <a href="/cursos" class="btn btn-card mt-2 px-4 py-2">
+                        Ir a Cursos →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Seguridad -->
+            <div class="col-md-4">
+                <div class="feature-card h-100 text-center p-4 shadow-sm">
+                    <span class="card-emoji">🔐</span>
+                    <h3 class="fw-bold mt-3" style="color: #3a2a6e;">Seguridad</h3>
+                    <p style="color: #7060a0;">Control de acceso con roles ADMIN y USER</p>
+                    <span class="badge-tag mb-3 d-inline-block" sec:authorize="hasRole('ADMIN')"
+                          style="background: #ffedd5; color: #ea580c;">
+                        🛡️ ADMIN
+                    </span>
+                    <span class="badge-tag mb-3 d-inline-block" sec:authorize="hasRole('USER')"
+                          style="background: #f3e8ff; color: #9333ea;">
+                        👤 USER
+                    </span>
+                    <br>
+                    <span class="btn btn-card mt-2 px-4 py-2 disabled"
+                          style="opacity: 0.6;">
+                        Configurado ✓
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-3 mt-5"
+            style="background-color: #3a2a6e; border-top: 3px solid #8060d0;">
+        <p class="mb-0 text-white">🎓 Universidad Java &copy; 2026 — SpringEduManager</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
